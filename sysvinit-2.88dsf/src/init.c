@@ -2555,6 +2555,22 @@ void init_main(void)
 	/*
 	 *	Ignore all signals.
 	 */
+	for(f = 1; f <= NSIG; f++)
+		SETSIG(sa, f, SIG_IGN, SA_RESTART);
+  }
+
+  SETSIG(sa, SIGALRM,  signal_handler, 0);
+  SETSIG(sa, SIGHUP,   signal_handler, 0);
+  SETSIG(sa, SIGINT,   signal_handler, 0);
+  SETSIG(sa, SIGCHLD,  chld_handler, SA_RESTART);
+  SETSIG(sa, SIGPWR,   signal_handler, 0);
+  SETSIG(sa, SIGWINCH, signal_handler, 0);
+  SETSIG(sa, SIGUSR1,  signal_handler, 0);
+  SETSIG(sa, SIGSTOP,  stop_handler, SA_RESTART);
+  SETSIG(sa, SIGTSTP,  stop_handler, SA_RESTART);
+  SETSIG(sa, SIGCONT,  cont_handler, SA_RESTART);
+  SETSIG(sa, SIGSEGV,  (void (*)(int))segv_handler, SA_RESTART);
+
   console_init();
 
   if (!reload) {
